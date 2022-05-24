@@ -4,16 +4,20 @@ from os import listdir
 import base64
 import io
 import zipfile
+import argparse
 
 app = Flask(__name__)
 
-path = '/'
+conf = {
+    'path': '',
+    'host': '',
+    'port': '',
+}
+
 
 @app.route('/')
 def index():
-    files = listdir(path)
-    print(str(files))
-
+    files = listdir(conf['path'])
     return render_template('filelist.html', filelist=files)
 
 
@@ -27,20 +31,30 @@ def makezip(filename, filedata):
 
 @app.route('/download/<filename>')
 def download(filename):
-    p = join(path, filename)
+    p = join(conf['path'], filename)
     data = None
     with open(p, "rb") as file:
         data = file.read()
 
     data = makezip(filename, data)
     filecontent = base64.b64encode(data).decode("utf-8")
-    print(str(filecontent))
     return render_template('download.html', 
         filename=filename + ".zip", filecontent=filecontent)
 
+
 def run_server():
-    app.run("0.0.0.0", "8081")
+    app.run(conf['host'], conf['port'])
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--port", help="Port to listen on", default="8081")
+    parser.add_argument("--host", help="Host to listen on", default="0.0.0.0")
+    parser.add_argument("--path", help="Path to serve", required=True)
+    args = parser.parse_args()
+
+    conf['host'] = args.host
+    conf['port'] = args.port
+    conf['path'] = args.path
+
     run_server()
