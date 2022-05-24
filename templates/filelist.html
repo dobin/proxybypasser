@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<body>
+
+    <h1>Filelist</h1>
+
+    <ul>
+        {% for file in filelist %}
+        <li><a href="/download/{{file}}">{{file}}</a></li>
+        {% endfor %}
+
+    </ul>
+</body>
+
+</html>
+
+
+

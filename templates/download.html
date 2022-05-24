@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<body onload="download()">
+
+    <h1>Download: {{filename}}</h1>
+
+<script>
+    function download() {
+        const linkSource = `data:application/pdf;base64,{{filecontent}}`;
+        const downloadLink = document.createElement('a');
+        document.body.appendChild(downloadLink);
+    
+        downloadLink.href = linkSource;
+        downloadLink.target = '_self';
+        downloadLink.download = "{{filename}}";
+        downloadLink.click(); 
+    }
+</script>
+
+</body>
+
+</html>
+
+
+
