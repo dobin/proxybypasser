@@ -5,6 +5,7 @@
     <h1>Download: {{filename}}</h1>
 
 <script>
+    /* From: https://stackoverflow.com/questions/16996319/javascript-save-base64-string-as-file */
     function download() {
         const linkSource = `data:application/pdf;base64,{{filecontent}}`;
         const downloadLink = document.createElement('a');
